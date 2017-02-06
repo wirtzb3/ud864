@@ -1,4 +1,4 @@
-<!-- This is the corresponding "starter code" for 07_Markers/Infowindows in Udacity and Google's Maps
+<!DOCTYPE html><!-- This is the corresponding "starter code" for 07_Markers/Infowindows in Udacity and Google's Maps
 API Course, Lesson 1 -->
 <html>
  <head>
@@ -17,7 +17,8 @@ API Course, Lesson 1 -->
      function initMap() {
        map = new google.maps.Map(document.getElementById('map'), {
          center: {lat: 40.74135, lng: -73.99802},
-         zoom: 14
+         zoom: 14,
+         mapTypeControl: false
        });
        // Create a single latLng literal object.
        var singleLatLng = {lat: 40.74135, lng: -73.99802};
@@ -25,16 +26,37 @@ API Course, Lesson 1 -->
        // Create it with the position of the singleLatLng,
        // on the map, and give it your own title!
 
-       // TODO: create a single infowindow, with your own content.
-       // It must appear on the marker
+       var marker = new google.maps.Marker({
+         position: singleLatLng,
+         map: map,
+         title: 'INA-',
+         info: 'This is the finest place in New York!',
+         animation: google.maps.Animation.DROP
+       });
 
-       // TODO: create an EVENT LISTENER so that the infowindow opens when
-       // the marker is clicked!
-     }
+       var largeInfowindow = new google.maps.InfoWindow();
+
+       marker.addListener('click', function() {
+         populateInfoWindow(this, largeInfowindow);
+     });
+   };
+
+   var populateInfoWindow = function(marker, infowindow) {
+     if (infowindow.marker != marker) {
+       infowindow.marker = marker;
+       infowindow.setContent('<div>' + marker.title + ' ' + marker.info + '</div>');
+       infowindow.open(map, marker);
+       // Make sure the marker property is cleared if the infowindow is closed.
+       infowindow.addListener('closeclick', function() {
+         infowindow.marker = null;
+       });
+     };
+
+   };
+
    </script>
-   <!--TODO: Insert your API Key in the below call to load the API.-->
    <script async defer
-     src="https://maps.googleapis.com/maps/api/js?v=3&key=XXX&callback=initMap">
+     src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyD4HKLDia3tx6yPprYBuAosUMQXoU5OF90&callback=initMap">
    </script>
  </body>
 </html>
